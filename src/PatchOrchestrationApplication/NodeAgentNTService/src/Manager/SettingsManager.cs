@@ -41,6 +41,9 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
         private const bool DefaultDisableAutoUpdateSettingInOS = true;
         private const bool DefaultInstallWindowsOSOnlyUpdates = false;
         private const string DefaultWUQueryCategoryIds = "";
+        private const string DefaultWUSkipUpdateIds = "";
+        private const string WUSkipUpdateIdsName = "WUSkipUpdateIds";
+
         private const bool DefaultAcceptWindowsUpdateEula = true;        
 
         private readonly ServiceSettings _serviceSettings;
@@ -137,7 +140,8 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             this._serviceSettings.OperationTimeOutInMinutes = serviceSettings.OperationTimeOutInMinutes;
             this._serviceSettings.WUQueryCategoryIds = serviceSettings.WUQueryCategoryIds;
             this._serviceSettings.InstallWindowsOSOnlyUpdates = serviceSettings.InstallWindowsOSOnlyUpdates;
-            this._serviceSettings.AcceptWindowsUpdateEula = serviceSettings.AcceptWindowsUpdateEula;            
+            this._serviceSettings.AcceptWindowsUpdateEula = serviceSettings.AcceptWindowsUpdateEula;
+            this._serviceSettings.SkipUpdateIds = serviceSettings.SkipUpdateIds;
 
             this._serviceSettings.ParseSettings();
         }
@@ -177,7 +181,8 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             serviceSettings.OperationTimeOutInMinutes = this.GetParameter<long>(node, OperationTimeOutInMinutesName, DefaultOperationTimeOutInMinutes);
             serviceSettings.InstallWindowsOSOnlyUpdates = this.GetParameter<bool>(node, InstallWindowsOSOnlyUpdateName, DefaultInstallWindowsOSOnlyUpdates);
             serviceSettings.WUQueryCategoryIds = this.GetParameter<string>(node, WUQueryCategoryIdsName, DefaultWUQueryCategoryIds);
-            serviceSettings.AcceptWindowsUpdateEula = this.GetParameter<bool>(node, AcceptWindowsUpdateEulaName, DefaultAcceptWindowsUpdateEula);            
+            serviceSettings.AcceptWindowsUpdateEula = this.GetParameter<bool>(node, AcceptWindowsUpdateEulaName, DefaultAcceptWindowsUpdateEula);
+            serviceSettings.SkipUpdateIds = this.GetParameter<string>(node, WUSkipUpdateIdsName, DefaultWUSkipUpdateIds);
 
             serviceSettings.ParseSettings();
 
@@ -216,7 +221,8 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             serviceSettings.OperationTimeOutInMinutes = DefaultOperationTimeOutInMinutes;
             serviceSettings.InstallWindowsOSOnlyUpdates = DefaultInstallWindowsOSOnlyUpdates;
             serviceSettings.WUQueryCategoryIds = DefaultWUQueryCategoryIds;
-            serviceSettings.AcceptWindowsUpdateEula = DefaultAcceptWindowsUpdateEula;            
+            serviceSettings.AcceptWindowsUpdateEula = DefaultAcceptWindowsUpdateEula;
+            serviceSettings.SkipUpdateIds = DefaultWUSkipUpdateIds;
 
             serviceSettings.ParseSettings();
 

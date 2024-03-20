@@ -142,8 +142,16 @@ Choose one of the following methods for deployment. Service Fabric best practice
 - Deploy the application using the following PowerShell command, in case you want to change the application parameters default values. You can do that as shown below:
 
   ```PowerShell
-  . out\Release\Deploy.ps1 -ApplicationPackagePath 'out\Release\PatchOrchestrationApplication'  -ApplicationParameter @{ 'WURescheduleCount'='10'; 'WUFrequency'= 'Weekly, Tuesday, 12:22:32'; }
+  . out\Release\Deploy.ps1 -ApplicationPackagePath 'out\Release\PatchOrchestrationApplication' -ApplicationParameter @{ 'WURescheduleCount'='10'; 'WUFrequency'= 'Weekly, Tuesday, 12:22:32'; }
   ```
+
+- Deploy the application using the following PowerShell command, in case you want to Skip certain updates.
+- This was specifically implemented for KB5034439 with ID a8a2d6e3-c6dc-4eb8-bcfb-8c8c7d947899. Accepts comma seperated values. You can do that as shown below:
+
+  ```PowerShell
+  . out\Release\Deploy.ps1 -ApplicationPackagePath 'out\Release\PatchOrchestrationApplication' -ApplicationParameter @{ 'SkipUpdateIds = 'a8a2d6e3-c6dc-4eb8-bcfb-8c8c7d947899'; }
+  ```
+
 > [!NOTE]
 > The above deployment procedure should only be used in case one wants to test changes made to this application. For production/test environment, one should always use the officially released version of the application. Application along with installation scripts can be downloaded from [release](https://github.com/Microsoft/service-fabric-poa/releases/latest) section of this repo. Deployment steps for this application can be found [here](https://docs.microsoft.com/azure/service-fabric/service-fabric-patch-orchestration-application#deploy-the-app)
 

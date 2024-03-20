@@ -9,6 +9,7 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
     using ServiceFabric.PatchOrchestration.Common;
     using Utility;
     using WUApiLib;
+    using System.Text.RegularExpressions;
 
     using System.ComponentModel;
     using System.IO;
@@ -676,7 +677,7 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
                 UpdateCollection updatesToDownload = new UpdateCollection();               
 
                 foreach (WUUpdateWrapper item in this._wuCollectionWrapper.Collection.Values)
-                {                    
+                { 
                     if (!item.IsDownloaded)
                     {
                         if (item.Update.EulaAccepted == false)
@@ -721,6 +722,7 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
                 {
                     var hResult = uResult.GetUpdateResult(i).HResult;
                     var updateID = updatesToDownload[i].Identity.UpdateID;
+
                     this._wuCollectionWrapper.Collection[updateID].IsDownloaded = (hResult == 0);
                     this._wuCollectionWrapper.Collection[updateID].HResult = hResult;
                     if (hResult != 0)
@@ -845,7 +847,7 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             WUCollectionWrapper collectionWrapper = new WUCollectionWrapper();
             foreach (IUpdate2 update in searchUpdates)
             {
-                if (UpdateIsInCategory(update))
+                if (UpdateIsInCategory(update) && UpdateIsNotSkipped(update))
                 {
                     collectionWrapper.Add(update);
                 }
@@ -886,6 +888,25 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             }
             _eventSource.VerboseMessage(string.Format("category id : {0} is parent of category id : {1}", category.Parent.CategoryID, category.CategoryID));
             return CheckCategory(category.Parent);
+        }
+        
+        private bool UpdateIsNotSkipped(IUpdate update)
+        {
+            _eventSource.VerboseMessage(string.Format("checking update {0} is not in SkipUpdateIds : {1}", update.Identity.UpdateID, this._serviceSettings.SkipUpdateIds));
+            if (CheckUpdateIsNotSkipped(update))
+            {
+                return true;
+            }    
+            return false;
+        }
+
+        private bool CheckUpdateIsNotSkipped(IUpdate update)
+        {
+            if (Regex.IsMatch($".*{update.Identity.UpdateID}.*", this._serviceSettings.SkipUpdateIds))
+            {
+                return false;
+            }
+            return true;
         }
 
         abstract class CallBack

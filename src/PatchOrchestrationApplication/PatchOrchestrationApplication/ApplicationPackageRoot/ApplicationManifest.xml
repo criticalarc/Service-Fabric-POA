@@ -49,6 +49,8 @@
     <Parameter Name="WUFrequency" DefaultValue="Weekly,Wednesday,7:00:00" />
     <!-- This flag enables the NodeAgentService to accept EULA for windows update on behalf of user -->
     <Parameter Name="AcceptWindowsUpdateEula" DefaultValue="true" />
+    <!-- Skip specified Windows Updates. This needs to be the Update GUID, not the KB number. Search https://catalog.update.microsoft.com for reference.  -->
+    <Parameter Name="SkipUpdateIds" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 

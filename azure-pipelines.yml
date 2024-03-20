@@ -2,7 +2,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'VS2017-Win2016'
+  vmImage: 'windows-2019'
 
 steps:
 - task: PowerShell@2
@@ -10,3 +10,11 @@ steps:
   inputs:
     targetType: filePath
     filePath: './build.ps1'
+    arguments: >
+      -MSBuildFullPath 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe'
+      -Verbosity 'diagnostic'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'out\Release'
+    ArtifactName: 'POA'
+    publishLocation: 'Container'
