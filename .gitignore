@@ -55,6 +55,7 @@ QLogs
 Repository Bloat Risks
 ###
 *.exe
+!nuget.exe
 *.dll
 *.lib
 *.pdb
