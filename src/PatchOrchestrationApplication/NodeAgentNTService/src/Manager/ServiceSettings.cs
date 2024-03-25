@@ -115,12 +115,6 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
         /// </summary>
         public List<string> CategoryIds { get; private set; }
 
-        /// <summary>
-        /// Blacklist of Update ID's, setting this will force POA to skip updates only for these UpdateID's
-        /// Null or Empty list implies this filter is not set, and its ok to install all updates.
-        /// </summary>
-        public string SkipUpdateIds { get; set; }
-                
         public long HourlyFrequencyInMinutes { get; private set; }        
 
         public void ParseSettings()

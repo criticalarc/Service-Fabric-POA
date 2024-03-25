@@ -9,7 +9,6 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
     using ServiceFabric.PatchOrchestration.Common;
     using Utility;
     using WUApiLib;
-    using System.Text.RegularExpressions;
 
     using System.ComponentModel;
     using System.IO;
@@ -847,7 +846,7 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             WUCollectionWrapper collectionWrapper = new WUCollectionWrapper();
             foreach (IUpdate2 update in searchUpdates)
             {
-                if (UpdateIsInCategory(update) && UpdateIsNotSkipped(update))
+                if (UpdateIsInCategory(update) && update.Identity.UpdateID != "a8a2d6e3-c6dc-4eb8-bcfb-8c8c7d947899")
                 {
                     collectionWrapper.Add(update);
                 }
@@ -888,25 +887,6 @@ namespace Microsoft.ServiceFabric.PatchOrchestration.NodeAgentNTService.Manager
             }
             _eventSource.VerboseMessage(string.Format("category id : {0} is parent of category id : {1}", category.Parent.CategoryID, category.CategoryID));
             return CheckCategory(category.Parent);
-        }
-        
-        private bool UpdateIsNotSkipped(IUpdate update)
-        {
-            _eventSource.VerboseMessage(string.Format("checking update {0} is not in SkipUpdateIds : {1}", update.Identity.UpdateID, this._serviceSettings.SkipUpdateIds));
-            if (CheckUpdateIsNotSkipped(update))
-            {
-                return true;
-            }    
-            return false;
-        }
-
-        private bool CheckUpdateIsNotSkipped(IUpdate update)
-        {
-            if (Regex.IsMatch($".*{update.Identity.UpdateID}.*", this._serviceSettings.SkipUpdateIds))
-            {
-                return false;
-            }
-            return true;
         }
 
         abstract class CallBack
